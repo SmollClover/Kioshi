@@ -1,5 +1,6 @@
-import { client } from '../client/Client';
 import { ButtonInteraction } from 'discord.js';
+
+import { client } from '../client/Client';
 
 export interface RunFunction {
 	(client: client, interaction: ButtonInteraction): Promise<unknown>;

@@ -1,15 +1,13 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-import { Client, MessageEmbed, MessageEmbedOptions, Intents, Collection } from 'discord.js';
 import consola, { Consola } from 'consola';
-import { Database } from 'zapmongo';
-import { promisify } from 'util';
+import { Client, Collection, Intents, MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import glob from 'glob';
+import { promisify } from 'util';
+import { Database } from 'zapmongo';
 
+import { Button } from '../interfaces/Button';
 import { Command } from '../interfaces/Command';
 import { Event } from '../interfaces/Event';
-import { Button } from '../interfaces/Button';
+import { Menu } from '../interfaces/Menu';
 
 const globPromise = promisify(glob);
 
@@ -19,6 +17,7 @@ class client extends Client {
 	public logger: Consola = consola;
 	public commands: Collection<string, Command> = new Collection();
 	public buttons: Collection<string, Button> = new Collection();
+	public menus: Collection<string, Menu> = new Collection();
 	public aliases: Collection<string, string> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 	public cooldowns: Collection<string, number> = new Collection();
@@ -27,6 +26,7 @@ class client extends Client {
 		super({
 			intents: [
 				Intents.FLAGS.GUILDS,
+				Intents.FLAGS.GUILD_MEMBERS,
 				Intents.FLAGS.GUILD_MESSAGES,
 				Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 				Intents.FLAGS.GUILD_INTEGRATIONS,
@@ -55,6 +55,12 @@ class client extends Client {
 			});
 		});
 
+		const menuFiles: string[] = await globPromise(`${__dirname}/../menus/**/*{.ts,.js}`);
+		menuFiles.map(async (value: string) => {
+			const file: Menu = await import(value);
+			this.menus.set(file.customId, { ...file });
+		});
+
 		const eventFiles: string[] = await globPromise(`${__dirname}/../events/**/*{.ts,.js}`);
 		eventFiles.map(async (value: string) => {
 			const file: Event = await import(value);
@@ -65,7 +71,19 @@ class client extends Client {
 
 		this.db = new Database({
 			mongoURI: process.env.MONGO_URI,
-			schemas: [],
+			schemas: [
+				{
+					name: 'settings',
+					data: {
+						Guild: String,
+						Moderators: Array,
+						LogChannelId: String,
+						Category: String,
+						AllowText: Boolean,
+						AllowVoice: Boolean,
+					},
+				},
+			],
 		});
 	}
 
