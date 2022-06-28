@@ -20,7 +20,6 @@ class client extends Client {
 	public menus: Collection<string, Menu> = new Collection();
 	public aliases: Collection<string, string> = new Collection();
 	public events: Collection<string, Event> = new Collection();
-	public cooldowns: Collection<string, number> = new Collection();
 
 	public constructor() {
 		super({
@@ -79,8 +78,6 @@ class client extends Client {
 						Moderators: Array,
 						LogChannelId: String,
 						Category: String,
-						AllowText: Boolean,
-						AllowVoice: Boolean,
 					},
 				},
 			],

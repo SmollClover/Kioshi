@@ -3,6 +3,4 @@ export interface Settings {
 	Moderators: Array<string>;
 	LogChannelId: string;
 	Category: string;
-	AllowText: boolean;
-	AllowVoice: boolean;
 }

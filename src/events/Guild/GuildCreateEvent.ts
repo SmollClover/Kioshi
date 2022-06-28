@@ -12,8 +12,6 @@ export const run: RunFunction = async (client, guild: Guild) => {
 			Moderators: [],
 			LogChannelId: '',
 			Category: '',
-			AllowText: false,
-			AllowVoice: true,
 		}
 	);
 
