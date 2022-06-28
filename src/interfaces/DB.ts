@@ -4,3 +4,9 @@ export interface Settings {
 	LogChannelId: string;
 	Category: string;
 }
+
+export interface Data {
+	Guild: string;
+	Channel: string;
+	Message: string;
+}

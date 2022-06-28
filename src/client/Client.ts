@@ -80,6 +80,14 @@ class client extends Client {
 						Category: String,
 					},
 				},
+				{
+					name: 'data',
+					data: {
+						Guild: String,
+						Channel: String,
+						Message: String,
+					},
+				},
 			],
 		});
 	}

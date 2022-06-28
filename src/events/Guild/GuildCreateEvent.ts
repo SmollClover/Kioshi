@@ -4,6 +4,7 @@ import { RunFunction } from '../../interfaces/Event';
 
 export const run: RunFunction = async (client, guild: Guild) => {
 	const SettingsSchema = await client.db.load('settings');
+	const DataSchema = await client.db.load('data');
 
 	await SettingsSchema.update(
 		{ Guild: guild.id },
@@ -12,6 +13,15 @@ export const run: RunFunction = async (client, guild: Guild) => {
 			Moderators: [],
 			LogChannelId: '',
 			Category: '',
+		}
+	);
+
+	await DataSchema.update(
+		{ Guild: guild.id },
+		{
+			Guild: guild.id,
+			Channel: '',
+			Message: '',
 		}
 	);
 
