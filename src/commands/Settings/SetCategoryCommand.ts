@@ -28,10 +28,10 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 		return client.emit('guildCreate', interaction.guild);
 	}
 
-	const channel = interaction.options.get('category')?.channel as CategoryChannel;
+	const category = interaction.options.get('category')?.channel as CategoryChannel;
 	const currentChannel = Settings.Category;
 
-	if (!channel) {
+	if (!category) {
 		if (!currentChannel)
 			return interaction.editReply({ embeds: [client.errorEmbed({ description: "**There's no Category set**" })] });
 
@@ -40,10 +40,10 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 
 		return interaction.editReply({ embeds: [client.embed({ description: '**Category removed**' })] });
 	} else {
-		Settings.Category = channel.id;
+		Settings.Category = category.id;
 		await SettingsSchema.update({ Guild: interaction.guildId }, { ...Settings });
 
-		return interaction.editReply({ embeds: [client.embed({ description: `**Category set to** \`${channel.name}\`` })] });
+		return interaction.editReply({ embeds: [client.embed({ description: `**Category set to** \`${category.name}\`` })] });
 	}
 };
 
