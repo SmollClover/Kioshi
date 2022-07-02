@@ -35,6 +35,9 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 			client.embed({
 				title: 'Server Booster Channel Menu',
 				description: 'Click one of the Options below to change that specific Setting.',
+				footer: {
+					text: 'Channels will be removed if not used for 48 hours',
+				},
 			}),
 		],
 		components: [
