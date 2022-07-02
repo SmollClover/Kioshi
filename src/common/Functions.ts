@@ -77,3 +77,19 @@ export async function changeChannelStatus(interaction: Interaction, channel: str
 
 	return Channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: !closed });
 }
+
+export async function changeChannelName(interaction: Interaction, channel: string, name: string): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	if (!Channel) return;
+
+	return Channel.setName(name);
+}
+
+export async function changeChannelLimit(interaction: Interaction, channel: string, limit: number): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	if (!Channel) return;
+
+	return Channel.setUserLimit(limit);
+}

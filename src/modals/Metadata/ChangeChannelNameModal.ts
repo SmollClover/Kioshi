@@ -1,7 +1,7 @@
 import { ModalSubmitInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
 
 import { Defaults } from '../../common/Defaults';
-import { ensureChannel } from '../../common/Functions';
+import { changeChannelName, ensureChannel } from '../../common/Functions';
 import { Data } from '../../interfaces/DB';
 import { RunFunction } from '../../interfaces/Modal';
 
@@ -17,6 +17,8 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 
 	Data.Name = interaction.components[0].components[0].value;
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Name: Data.Name });
+
+	await changeChannelName(interaction, Data.Channel, Data.Name ? Data.Name : interaction.user.username);
 
 	return interaction.editReply({
 		embeds: [client.embed({ title: Data.Name ? `Changed Name to ${Data.Name}` : 'Removed Name' })],
