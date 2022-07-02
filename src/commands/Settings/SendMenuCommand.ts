@@ -39,11 +39,7 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 		],
 		components: [
 			new MessageActionRow().addComponents([
-				new MessageButton()
-					.setCustomId('showCurrentSettings')
-					.setLabel('Info')
-					.setStyle('PRIMARY')
-					.setEmoji(Emojis.question_mark),
+				new MessageButton().setCustomId('showInfo').setLabel('Info').setStyle('PRIMARY').setEmoji(Emojis.question_mark),
 				new MessageButton()
 					.setCustomId('openMetadataMenu')
 					.setLabel('Metadata')

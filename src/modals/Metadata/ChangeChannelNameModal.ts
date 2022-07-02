@@ -15,7 +15,9 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 	Data.Name = interaction.components[0].components[0].value;
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Name: Data.Name });
 
-	return interaction.editReply({ embeds: [client.embed({ title: `Changed Name to ${Data.Name}` })] });
+	return interaction.editReply({
+		embeds: [client.embed({ title: Data.Name ? `Changed Name to ${Data.Name}` : 'Removed Name' })],
+	});
 };
 
 export const customId: string = 'changeChannelName';

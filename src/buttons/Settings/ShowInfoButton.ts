@@ -13,28 +13,18 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
 
-	const components = [
-		new MessageActionRow().addComponents([
-			new MessageButton()
-				.setCustomId('changeChannelName')
-				.setLabel('Change Name')
-				.setEmoji(Emojis.draw_border)
-				.setStyle('SECONDARY'),
-			new MessageButton()
-				.setCustomId('changeChannelLimit')
-				.setLabel('Change User Limit')
-				.setEmoji(Emojis.group)
-				.setStyle('SECONDARY'),
-		]),
-	];
-
 	const embeds = [
 		client.embed({
-			title: 'Metadata',
+			title: 'Info',
 			fields: [
 				{
 					name: 'Channel Name',
 					value: Data.Name ? Data.Name : interaction.user.username,
+					inline: true,
+				},
+				{
+					name: 'Channel Status',
+					value: Data.Private ? 'Private' : 'Public',
 					inline: true,
 				},
 				{
@@ -46,7 +36,17 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 		}),
 	];
 
-	return interaction.editReply({ embeds, components });
+	if (Data.Private)
+		embeds[0].addField(
+			`Added Users [${Data.AddedUsers.length}]`,
+			Data.AddedUsers.length > 0
+				? Data.AddedUsers.map((user) => {
+						return `<@!${user}>`;
+				  }).join(' ')
+				: 'None'
+		);
+
+	return interaction.editReply({ embeds });
 };
 
-export const customId: string = 'openMetadataMenu';
+export const customId: string = 'showInfo';

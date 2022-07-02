@@ -16,7 +16,7 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 			.setCustomId('changeChannelName')
 			.addComponents(
 				new MessageActionRow<ModalActionRowComponent>().addComponents([
-					new TextInputComponent().setCustomId('name').setLabel('Channel Name').setRequired(true).setStyle('SHORT'),
+					new TextInputComponent().setCustomId('name').setLabel('Channel Name').setStyle('SHORT'),
 				])
 			)
 	);
