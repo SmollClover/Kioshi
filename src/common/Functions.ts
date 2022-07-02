@@ -32,10 +32,11 @@ export async function ensureChannel(client: client, interaction: Interaction): P
 				];
 				Settings.Moderators.map((moderator) => permissionOverwrites.push(Defaults.Permissions.Moderators(moderator)));
 
-				const Channel = await Category.createChannel(interaction.user.username, {
+				const Channel = await Category.createChannel(Data.Name ? Data.Name : interaction.user.username, {
 					type: 'GUILD_VOICE',
 					reason: 'Server Booster Perks | Created missing Channel',
 					permissionOverwrites,
+					userLimit: Data.Limit,
 				});
 
 				return DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Channel: Channel.id });
@@ -58,7 +59,8 @@ export async function addUserToChannel(interaction: Interaction, channel: string
 	if (!Channel) return;
 
 	if (Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
-	return Channel.permissionOverwrites.create(user, { VIEW_CHANNEL: true });
+	Channel.permissionOverwrites.create(user, { VIEW_CHANNEL: true });
+	return;
 }
 
 export async function removeUserFromChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
@@ -67,7 +69,8 @@ export async function removeUserFromChannel(interaction: Interaction, channel: s
 	if (!Channel) return;
 
 	if (!Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
-	return Channel.permissionOverwrites.delete(user);
+	Channel.permissionOverwrites.delete(user);
+	return;
 }
 
 export async function changeChannelStatus(interaction: Interaction, channel: string, closed: boolean): Promise<any> {
@@ -75,7 +78,8 @@ export async function changeChannelStatus(interaction: Interaction, channel: str
 	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
 	if (!Channel) return;
 
-	return Channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: !closed });
+	Channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: !closed });
+	return;
 }
 
 export async function changeChannelName(interaction: Interaction, channel: string, name: string): Promise<any> {
@@ -83,7 +87,8 @@ export async function changeChannelName(interaction: Interaction, channel: strin
 	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
 	if (!Channel) return;
 
-	return Channel.setName(name);
+	Channel.setName(name);
+	return;
 }
 
 export async function changeChannelLimit(interaction: Interaction, channel: string, limit: number): Promise<any> {
@@ -91,5 +96,6 @@ export async function changeChannelLimit(interaction: Interaction, channel: stri
 	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
 	if (!Channel) return;
 
-	return Channel.setUserLimit(limit);
+	Channel.setUserLimit(limit);
+	return;
 }

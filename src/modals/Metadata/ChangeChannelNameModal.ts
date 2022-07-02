@@ -1,4 +1,4 @@
-import { ModalSubmitInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
+import { ModalSubmitInteraction } from 'discord.js';
 
 import { Defaults } from '../../common/Defaults';
 import { changeChannelName, ensureChannel } from '../../common/Functions';
