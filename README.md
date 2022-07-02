@@ -1,5 +1,7 @@
 # Kioshi
 
+## The Bot is still in development and is not functional currently!
+
 ### A Simple Discord Bot that handles Perks for Server Boosters
 
 > This Bot was designed for personal use. There's no guarantee for it to be stable when used by someone else
@@ -16,6 +18,8 @@ Create a `.env` file in the project root directory with the following data insid
 TOKEN=YOUR_DISCORD_BOT_TOKEN
 MONGO_URI=YOUR_MONGO_URI
 ```
+
+Go into `./src/common/Emojis.ts` and change the Emojis for the Bot to use
 
 ### Using NVM
 
