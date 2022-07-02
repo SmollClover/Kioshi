@@ -4,6 +4,7 @@ import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Modal';
+import { ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ModalSubmitInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -12,6 +13,8 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 	let Data = (await DataSchema.findOne({ Guild: interaction.guildId, User: interaction.user.id })) as Data;
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
+
+	await ensureChannel(client, interaction);
 
 	if (!Data.Private)
 		return interaction.reply({

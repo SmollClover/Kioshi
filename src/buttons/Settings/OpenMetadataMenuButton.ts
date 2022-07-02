@@ -14,7 +14,7 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
 
-	ensureChannel(client, interaction);
+	await ensureChannel(client, interaction);
 
 	const components = [
 		new MessageActionRow().addComponents([

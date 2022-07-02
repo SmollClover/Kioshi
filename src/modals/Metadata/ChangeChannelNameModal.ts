@@ -1,6 +1,7 @@
 import { ModalSubmitInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
 
 import { Defaults } from '../../common/Defaults';
+import { ensureChannel } from '../../common/Functions';
 import { Data } from '../../interfaces/DB';
 import { RunFunction } from '../../interfaces/Modal';
 
@@ -11,6 +12,8 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 	let Data = (await DataSchema.findOne({ Guild: interaction.guildId, User: interaction.user.id })) as Data;
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
+
+	await ensureChannel(client, interaction);
 
 	Data.Name = interaction.components[0].components[0].value;
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Name: Data.Name });

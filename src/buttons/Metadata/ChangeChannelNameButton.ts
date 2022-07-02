@@ -3,12 +3,15 @@ import { ButtonInteraction, MessageActionRow, Modal, ModalActionRowComponent, Te
 import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { RunFunction } from '../../interfaces/Button';
+import { ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
 	const DataSchema = await client.db.load('data');
 	let Data = (await DataSchema.findOne({ Guild: interaction.guildId, User: interaction.user.id })) as Data;
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
+
+	await ensureChannel(client, interaction);
 
 	return interaction.showModal(
 		new Modal()

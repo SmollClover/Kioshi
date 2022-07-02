@@ -3,6 +3,7 @@ import { ButtonInteraction, MessageActionRow, MessageSelectMenu } from 'discord.
 import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { RunFunction } from '../../interfaces/Button';
+import { ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -11,6 +12,8 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 	let Data = (await DataSchema.findOne({ Guild: interaction.guildId, User: interaction.user.id })) as Data;
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
+
+	await ensureChannel(client, interaction);
 
 	return interaction.editReply({
 		embeds: [client.embed({ title: 'Choose new User Limit' })],
