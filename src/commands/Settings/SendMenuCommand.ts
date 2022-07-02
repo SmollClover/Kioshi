@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionData, CommandInteraction, GuildMember, MessageActionRow, MessageButton } from 'discord.js';
 
 import { Emojis } from '../../common/Emojis';
+import { Settings } from '../../interfaces/DB';
 import { RunFunction } from '../../interfaces/Command';
 
 export const run: RunFunction = async (client, interaction: CommandInteraction) => {
@@ -9,6 +10,23 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 			ephemeral: true,
 			embeds: [client.errorEmbed({ description: '**Insufficient Permissions**\nAdministrator Permissions required!' })],
 		});
+
+	const SettingsSchema = await client.db.load('settings');
+	const Settings = (await SettingsSchema.findOne({ Guild: interaction.guildId })) as Settings;
+
+	if (!Settings) {
+		await interaction.editReply({
+			embeds: [
+				client.fatalErrorEmbed({
+					title: 'Error encountered',
+					description:
+						'Rolling back Settings to Default and emitting Guild Join Event.\nPlease try again, after the Bot has sent the standard Invitation Message.',
+				}),
+			],
+		});
+
+		return client.emit('guildCreate', interaction.guild);
+	}
 
 	await interaction.deferReply({ ephemeral: true });
 

@@ -1,29 +1,12 @@
 import { Guild } from 'discord.js';
 
+import { Defaults } from '../../common/Defaults';
 import { RunFunction } from '../../interfaces/Event';
 
 export const run: RunFunction = async (client, guild: Guild) => {
 	const SettingsSchema = await client.db.load('settings');
-	const DataSchema = await client.db.load('data');
 
-	await SettingsSchema.update(
-		{ Guild: guild.id },
-		{
-			Guild: guild.id,
-			Moderators: [],
-			LogChannelId: '',
-			Category: '',
-		}
-	);
-
-	await DataSchema.update(
-		{ Guild: guild.id },
-		{
-			Guild: guild.id,
-			Channel: '',
-			Message: '',
-		}
-	);
+	await SettingsSchema.update({ Guild: guild.id }, Defaults.Settings);
 
 	try {
 		await guild.systemChannel.send({
