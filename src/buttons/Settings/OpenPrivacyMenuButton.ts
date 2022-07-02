@@ -13,25 +13,50 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 
 	if (!Data) Data = await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, Defaults.Data);
 
-	return interaction.editReply({
-		embeds: [client.embed({ title: `Currently ${Data.Private ? 'Private' : 'Public'}` })],
-		components: [
-			new MessageActionRow().addComponents([
-				new MessageButton()
-					.setCustomId('makeChannelPublic')
-					.setLabel('Make Public')
-					.setEmoji(Emojis.key_off)
-					.setStyle('SUCCESS')
-					.setDisabled(!Data.Private),
-				new MessageButton()
-					.setCustomId('makeChannelPrivate')
-					.setLabel('Make Private')
-					.setEmoji(Emojis.key)
-					.setStyle('DANGER')
-					.setDisabled(Data.Private),
-			]),
-		],
-	});
+	const components = [
+		new MessageActionRow().addComponents([
+			new MessageButton()
+				.setCustomId('makeChannelPublic')
+				.setLabel('Make Public')
+				.setEmoji(Emojis.key_off)
+				.setStyle('SUCCESS')
+				.setDisabled(!Data.Private),
+			new MessageButton()
+				.setCustomId('makeChannelPrivate')
+				.setLabel('Make Private')
+				.setEmoji(Emojis.key)
+				.setStyle('DANGER')
+				.setDisabled(Data.Private),
+		]),
+		new MessageActionRow().addComponents([
+			new MessageButton()
+				.setCustomId('addUserToChanel')
+				.setLabel('Add User to Channel')
+				.setEmoji(Emojis.user)
+				.setStyle('SECONDARY')
+				.setDisabled(!Data.Private),
+			new MessageButton()
+				.setCustomId('removeUserFromChannel')
+				.setLabel('Remove User from Channel')
+				.setEmoji(Emojis.user)
+				.setStyle('SECONDARY')
+				.setDisabled(!Data.Private),
+		]),
+	];
+
+	const embeds = [client.embed({ title: `Status: ${Data.Private ? 'Private' : 'Public'}` })];
+
+	if (Data.Private)
+		embeds[0].addField(
+			`Added Users [${Data.AddedUsers.length}]`,
+			Data.AddedUsers.length > 0
+				? Data.AddedUsers.map((user) => {
+						return `<@!${user}>`;
+				  }).join(' ')
+				: 'None'
+		);
+
+	return interaction.editReply({ embeds, components });
 };
 
 export const customId: string = 'openPrivacyMenu';

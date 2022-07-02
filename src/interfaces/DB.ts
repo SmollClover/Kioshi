@@ -10,4 +10,5 @@ export interface Data {
 	User: string;
 	Channel: string;
 	Private: boolean;
+	AddedUsers: Array<string>;
 }

@@ -87,6 +87,7 @@ class client extends Client {
 						User: String,
 						Channel: String,
 						Private: Boolean,
+						AddedUsers: Array<string>,
 					},
 				},
 			],

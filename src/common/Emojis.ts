@@ -4,4 +4,5 @@ export const Emojis = {
 	shield: '<:shield:992768390106189864>',
 	key: '<:key:992767464150679583>',
 	key_off: '<:key_off:992767463156629534>',
+	user: '<:user:992785142626140220>',
 };
