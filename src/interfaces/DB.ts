@@ -7,6 +7,7 @@ export interface Settings {
 
 export interface Data {
 	Guild: string;
+	User: string;
 	Channel: string;
-	Message: string;
+	Private: boolean;
 }

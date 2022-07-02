@@ -84,8 +84,9 @@ class client extends Client {
 					name: 'data',
 					data: {
 						Guild: String,
+						User: String,
 						Channel: String,
-						Message: String,
+						Private: Boolean,
 					},
 				},
 			],
