@@ -30,7 +30,7 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 		]),
 		new MessageActionRow().addComponents([
 			new MessageButton()
-				.setCustomId('addUserToChanel')
+				.setCustomId('addUserToChannel')
 				.setLabel('Add User to Channel')
 				.setEmoji(Emojis.user)
 				.setStyle('SECONDARY')

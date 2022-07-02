@@ -8,6 +8,7 @@ import { Button } from '../interfaces/Button';
 import { Command } from '../interfaces/Command';
 import { Event } from '../interfaces/Event';
 import { Menu } from '../interfaces/Menu';
+import { Modal } from '../interfaces/Modal';
 
 const globPromise = promisify(glob);
 
@@ -18,6 +19,7 @@ class client extends Client {
 	public commands: Collection<string, Command> = new Collection();
 	public buttons: Collection<string, Button> = new Collection();
 	public menus: Collection<string, Menu> = new Collection();
+	public modals: Collection<string, Modal> = new Collection();
 	public aliases: Collection<string, string> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 
@@ -58,6 +60,12 @@ class client extends Client {
 		menuFiles.map(async (value: string) => {
 			const file: Menu = await import(value);
 			this.menus.set(file.customId, { ...file });
+		});
+
+		const modalFiles: string[] = await globPromise(`${__dirname}/../modals/**/*{.ts,.js}`);
+		modalFiles.map(async (value: string) => {
+			const file: Modal = await import(value);
+			this.modals.set(file.customId, { ...file });
 		});
 
 		const eventFiles: string[] = await globPromise(`${__dirname}/../events/**/*{.ts,.js}`);

@@ -4,6 +4,7 @@ import { Button } from '../../interfaces/Button';
 import { Command } from '../../interfaces/Command';
 import { RunFunction } from '../../interfaces/Event';
 import { Menu } from '../../interfaces/Menu';
+import { Modal } from '../../interfaces/Modal';
 
 export const run: RunFunction = async (client, interaction: Interaction) => {
 	if (interaction.isCommand()) {
@@ -20,7 +21,7 @@ export const run: RunFunction = async (client, interaction: Interaction) => {
 			if (interaction.deferred) {
 				interaction.editReply({ embeds });
 			} else {
-				interaction.editReply({ embeds });
+				interaction.reply({ embeds });
 			}
 
 			return client.logger.error(reason);
@@ -39,7 +40,7 @@ export const run: RunFunction = async (client, interaction: Interaction) => {
 			if (interaction.deferred) {
 				interaction.editReply({ embeds });
 			} else {
-				interaction.editReply({ embeds });
+				interaction.reply({ embeds });
 			}
 
 			return client.logger.error(reason);
@@ -58,7 +59,26 @@ export const run: RunFunction = async (client, interaction: Interaction) => {
 			if (interaction.deferred) {
 				interaction.editReply({ embeds });
 			} else {
+				interaction.reply({ embeds });
+			}
+
+			return client.logger.error(reason);
+		});
+	} else if (interaction.isModalSubmit()) {
+		const modal: Modal | undefined = client.modals.get(interaction.customId);
+		if (!modal) return;
+
+		modal.run(client, interaction).catch((reason: any) => {
+			const embeds = [
+				client.fatalErrorEmbed({
+					description: `An Error occurred while executing the command:\n\`\`\`typescript\n${reason}\n\`\`\``,
+				}),
+			];
+
+			if (interaction.deferred) {
 				interaction.editReply({ embeds });
+			} else {
+				interaction.reply({ embeds });
 			}
 
 			return client.logger.error(reason);
