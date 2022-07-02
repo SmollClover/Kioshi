@@ -1,5 +1,6 @@
 import { ButtonInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
 
+import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Button';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
@@ -18,13 +19,13 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 							label: 'Public',
 							value: 'public',
 							description: 'Make Channel open to anyone',
-							emoji: '<:key_off:992767463156629534>',
+							emoji: Emojis.key_off,
 						},
 						{
 							label: 'Private',
 							value: 'private',
 							description: 'Close Channel for others',
-							emoji: '<:key:992767464150679583>',
+							emoji: Emojis.key,
 						},
 					]),
 			]),

@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionData, CommandInteraction, GuildMember, MessageActionRow, MessageButton } from 'discord.js';
+import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Command';
 
 export const run: RunFunction = async (client, interaction: CommandInteraction) => {
@@ -23,17 +24,17 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 					.setCustomId('showCurrentSettings')
 					.setLabel('Info')
 					.setStyle('PRIMARY')
-					.setEmoji('<:question_mark:992767461843812423>'),
+					.setEmoji(Emojis.question_mark),
 				new MessageButton()
 					.setCustomId('openPrivacyMenu')
 					.setLabel('Privacy')
 					.setStyle('SECONDARY')
-					.setEmoji('<:shield:992768390106189864>'),
+					.setEmoji(Emojis.shield),
 			]),
 		],
 	});
 
-	return interaction.editReply({ content: '<:done:827250778447937566>' });
+	return interaction.editReply({ content: Emojis.done });
 };
 
 export const name: string = 'menu';
