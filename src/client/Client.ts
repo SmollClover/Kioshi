@@ -7,6 +7,7 @@ import { Database } from 'zapmongo';
 import { Button } from '../interfaces/Button';
 import { Command } from '../interfaces/Command';
 import { Event } from '../interfaces/Event';
+import { Interval } from '../interfaces/Interval';
 import { Menu } from '../interfaces/Menu';
 import { Modal } from '../interfaces/Modal';
 
@@ -21,6 +22,7 @@ class client extends Client {
 	public menus: Collection<string, Menu> = new Collection();
 	public modals: Collection<string, Modal> = new Collection();
 	public aliases: Collection<string, string> = new Collection();
+	public intervals: Collection<string, Interval> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 
 	public constructor() {
@@ -74,6 +76,16 @@ class client extends Client {
 			this.events.set(file.name, file);
 
 			this.on(file.name, file.run.bind(undefined, this));
+		});
+
+		const intervalFiles: string[] = await globPromise(`${__dirname}/../intervals/**/*{.ts,.js}`);
+		intervalFiles.map(async (value: string) => {
+			const file: Interval = await import(value);
+			this.intervals.set(file.name, { ...file });
+
+			setInterval(() => {
+				file.run(this);
+			}, file.milliseconds);
 		});
 
 		this.db = new Database({
