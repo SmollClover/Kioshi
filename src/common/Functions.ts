@@ -1,11 +1,10 @@
-import { CategoryChannel, Interaction } from 'discord.js';
-import { DatabaseModule } from 'zapmongo';
+import { CategoryChannel, Interaction, VoiceChannel } from 'discord.js';
 import { client } from '../client/Client';
 
 import { Data, Settings } from '../interfaces/DB';
 import { Defaults } from './Defaults';
 
-export async function ensureChannel(client: client, interaction: Interaction) {
+export async function ensureChannel(client: client, interaction: Interaction): Promise<any> {
 	const SettingsSchema = await client.db.load('settings');
 	const Settings = (await SettingsSchema.findOne({ Guild: interaction.guildId })) as Settings;
 	const DataSchema = await client.db.load('data');
@@ -51,4 +50,22 @@ export async function ensureChannel(client: client, interaction: Interaction) {
 				reason: 'Server Booster Perks | Channel in wrong Category',
 			});
 	}
+}
+
+export async function addUserToChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	if (!Channel) return;
+
+	if (Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
+	return Channel.permissionOverwrites.create(user, { VIEW_CHANNEL: true });
+}
+
+export async function removeUserFromChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	if (!Channel) return;
+
+	if (!Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
+	return Channel.permissionOverwrites.delete(user);
 }

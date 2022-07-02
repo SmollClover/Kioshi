@@ -4,7 +4,7 @@ import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Modal';
-import { ensureChannel } from '../../common/Functions';
+import { addUserToChannel, ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ModalSubmitInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -28,7 +28,9 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 			(!!member.displayName.toLowerCase().match(input.toLowerCase()) ||
 				!!member.user.tag.toLowerCase().match(input.toLowerCase()) ||
 				member.id === input) &&
-			!Data.AddedUsers.includes(member.id)
+			!Data.AddedUsers.includes(member.id) &&
+			member.id !== interaction.user.id &&
+			!member.user.bot
 	);
 
 	if (members.size > 1) {
@@ -57,6 +59,8 @@ export const run: RunFunction = async (client, interaction: ModalSubmitInteracti
 
 		Data.AddedUsers.push(members.first().id);
 		await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { AddedUsers: Data.AddedUsers });
+
+		await addUserToChannel(interaction, Data.Channel, members.first().id);
 
 		return interaction.editReply({
 			embeds: [client.embed({ title: `Added User ${members.first().displayName}` })],

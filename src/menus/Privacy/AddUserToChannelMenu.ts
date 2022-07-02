@@ -4,7 +4,7 @@ import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Menu';
-import { ensureChannel } from '../../common/Functions';
+import { addUserToChannel, ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: SelectMenuInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -31,6 +31,8 @@ export const run: RunFunction = async (client, interaction: SelectMenuInteractio
 
 	Data.AddedUsers.push(input);
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { AddedUsers: Data.AddedUsers });
+
+	await addUserToChannel(interaction, Data.Channel, input);
 
 	let User = interaction.guild.members.cache.get(input);
 	if (!User) User = await interaction.guild.members.fetch({ force: true, user: input });

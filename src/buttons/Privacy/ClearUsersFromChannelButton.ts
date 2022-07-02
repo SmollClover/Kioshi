@@ -4,7 +4,7 @@ import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Button';
-import { ensureChannel } from '../../common/Functions';
+import { ensureChannel, removeUserFromChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -24,8 +24,10 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { AddedUsers: [] });
 
+	Data.AddedUsers.map((user) => removeUserFromChannel(interaction, Data.Channel, user));
+
 	return interaction.editReply({
-		embeds: [client.embed({ title: 'Removed Everyone from Channel' })],
+		embeds: [client.embed({ title: 'Removing Everyone from Channel' })],
 	});
 };
 
