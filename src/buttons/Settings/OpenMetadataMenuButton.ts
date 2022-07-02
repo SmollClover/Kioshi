@@ -33,18 +33,14 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 			title: 'Metadata',
 			fields: [
 				{
-					name: 'Title',
-					value: Data.Title ? Data.Title : interaction.user.tag.toLowerCase(),
+					name: 'Channel Name',
+					value: Data.Name ? Data.Name : interaction.user.tag.toLowerCase(),
 					inline: true,
 				},
 				{
 					name: 'User Limit',
 					value: Data.Limit === 0 ? 'No Limit' : `${Data.Limit.toString()} User${Data.Limit > 1 ? 's' : ''}`,
 					inline: true,
-				},
-				{
-					name: 'Description',
-					value: Data.Description ? Data.Description : 'None',
 				},
 			],
 		}),

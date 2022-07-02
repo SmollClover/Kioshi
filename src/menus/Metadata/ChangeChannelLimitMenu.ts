@@ -16,7 +16,7 @@ export const run: RunFunction = async (client, interaction: SelectMenuInteractio
 	Data.Limit = parseInt(interaction.values[0]);
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Limit: Data.Limit });
 
-	return interaction.editReply({ embeds: [client.embed({ title: `Changed Limit to ${interaction.values[0]}` })] });
+	return interaction.editReply({ embeds: [client.embed({ title: `Changed Limit to ${Data.Limit}` })] });
 };
 
 export const customId: string = 'changeChannelLimit';
