@@ -38,7 +38,13 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 			new MessageButton()
 				.setCustomId('removeUserFromChannel')
 				.setLabel('Remove User from Channel')
-				.setEmoji(Emojis.user)
+				.setEmoji(Emojis.user_off)
+				.setStyle('SECONDARY')
+				.setDisabled(!Data.Private),
+			new MessageButton()
+				.setCustomId('clearUsersFromChannel')
+				.setLabel('Remove Everyone from Channel')
+				.setEmoji(Emojis.group_remove)
 				.setStyle('SECONDARY')
 				.setDisabled(!Data.Private),
 		]),

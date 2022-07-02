@@ -9,4 +9,6 @@ export const Emojis = {
 	key: '<:key:992767464150679583>',
 	key_off: '<:key_off:992767463156629534>',
 	user: '<:user:992785142626140220>',
+	user_off: '<:user_off:992808454936854730>',
+	group_remove: '<:group_remove:992808456488767578>',
 };
