@@ -4,7 +4,7 @@ import { Defaults } from '../../common/Defaults';
 import { Data } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 import { RunFunction } from '../../interfaces/Button';
-import { ensureChannel } from '../../common/Functions';
+import { changeChannelStatus, ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
 	await interaction.deferReply({ ephemeral: true });
@@ -20,6 +20,8 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 		return interaction.editReply({ embeds: [client.errorEmbed({ title: `${Emojis.error} Channel is already Public` })] });
 
 	await DataSchema.update({ Guild: interaction.guildId, User: interaction.user.id }, { Private: false, AddedUsers: [] });
+
+	await changeChannelStatus(interaction, Data.Channel, false);
 
 	return interaction.editReply({ embeds: [client.embed({ title: `${Emojis.done} Channel set to Public` })] });
 };

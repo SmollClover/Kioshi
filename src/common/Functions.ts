@@ -69,3 +69,11 @@ export async function removeUserFromChannel(interaction: Interaction, channel: s
 	if (!Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
 	return Channel.permissionOverwrites.delete(user);
 }
+
+export async function changeChannelStatus(interaction: Interaction, channel: string, closed: boolean): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	if (!Channel) return;
+
+	return Channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: !closed });
+}
