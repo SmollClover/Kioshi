@@ -10,5 +10,9 @@ export const Emojis = {
 	key_off: '<:key_off:992767463156629534>',
 	user: '<:user:992785142626140220>',
 	user_off: '<:user_off:992808454936854730>',
+	group: '<:group:992831172293972038>',
 	group_remove: '<:group_remove:992808456488767578>',
+	source: '<:source:992828945391169587>',
+	draw_border: '<:draw_border:992831736864055389>',
+	notes: '<:notes:992831736146837564>',
 };

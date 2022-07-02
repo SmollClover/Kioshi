@@ -45,6 +45,11 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 					.setStyle('PRIMARY')
 					.setEmoji(Emojis.question_mark),
 				new MessageButton()
+					.setCustomId('openMetadataMenu')
+					.setLabel('Metadata')
+					.setStyle('SECONDARY')
+					.setEmoji(Emojis.source),
+				new MessageButton()
 					.setCustomId('openPrivacyMenu')
 					.setLabel('Privacy')
 					.setStyle('SECONDARY')

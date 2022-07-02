@@ -8,5 +8,8 @@ export const Defaults = {
 		Channel: '',
 		Private: true,
 		AddedUsers: [],
+		Title: '',
+		Description: '',
+		Limit: 0,
 	},
 };

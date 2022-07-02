@@ -11,4 +11,7 @@ export interface Data {
 	Channel: string;
 	Private: boolean;
 	AddedUsers: Array<string>;
+	Title: string;
+	Description: string;
+	Limit: number;
 }
