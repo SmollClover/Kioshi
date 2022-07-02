@@ -55,7 +55,11 @@ export async function ensureChannel(client: client, interaction: Interaction): P
 
 export async function addUserToChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
 	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
-	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
 	if (!Channel) return;
 
 	if (Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
@@ -65,7 +69,11 @@ export async function addUserToChannel(interaction: Interaction, channel: string
 
 export async function removeUserFromChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
 	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
-	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
 	if (!Channel) return;
 
 	if (!Channel.permissionsFor(user).has('VIEW_CHANNEL', false)) return;
@@ -73,9 +81,48 @@ export async function removeUserFromChannel(interaction: Interaction, channel: s
 	return;
 }
 
+export async function addModeratorToChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
+	if (!Channel) return;
+
+	if (Channel.permissionsFor(user).has('MANAGE_MESSAGES', false)) return;
+	Channel.permissionOverwrites.create(user, {
+		VIEW_CHANNEL: true,
+		MANAGE_MESSAGES: true,
+		MENTION_EVERYONE: true,
+		USE_APPLICATION_COMMANDS: true,
+		MOVE_MEMBERS: true,
+		MUTE_MEMBERS: true,
+	});
+	return;
+}
+
+export async function removeModeratorFromChannel(interaction: Interaction, channel: string, user: string): Promise<any> {
+	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
+	if (!Channel) return;
+
+	if (!Channel.permissionsFor(user).has('MANAGE_MESSAGES', false)) return;
+	Channel.permissionOverwrites.delete(user);
+	return;
+}
+
 export async function changeChannelStatus(interaction: Interaction, channel: string, closed: boolean): Promise<any> {
 	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
-	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
 	if (!Channel) return;
 
 	Channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: !closed });
@@ -84,7 +131,11 @@ export async function changeChannelStatus(interaction: Interaction, channel: str
 
 export async function changeChannelName(interaction: Interaction, channel: string, name: string): Promise<any> {
 	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
-	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
 	if (!Channel) return;
 
 	Channel.setName(name);
@@ -93,7 +144,11 @@ export async function changeChannelName(interaction: Interaction, channel: strin
 
 export async function changeChannelLimit(interaction: Interaction, channel: string, limit: number): Promise<any> {
 	let Channel = interaction.guild.channels.cache.get(channel) as VoiceChannel;
-	if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	try {
+		if (!Channel) Channel = (await interaction.guild.channels.fetch(channel, { force: true })) as VoiceChannel;
+	} catch {
+		return;
+	}
 	if (!Channel) return;
 
 	Channel.setUserLimit(limit);
