@@ -12,6 +12,7 @@ export const Defaults = {
 		AddedUsers: [],
 		Name: '',
 		Limit: 0,
+		Used: Date.now(),
 	},
 	Permissions: {
 		User: (id: string): OverwriteResolvable => {

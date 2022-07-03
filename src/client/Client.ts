@@ -110,6 +110,7 @@ class client extends Client {
 						AddedUsers: Array<string>,
 						Name: String,
 						Limit: Number,
+						Used: Number,
 					},
 				},
 			],

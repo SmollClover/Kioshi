@@ -13,4 +13,5 @@ export interface Data {
 	AddedUsers: Array<string>;
 	Name: string;
 	Limit: number;
+	Used: number;
 }
