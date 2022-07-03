@@ -3,18 +3,17 @@ import { Guild, GuildMember, VoiceChannel } from 'discord.js';
 import { RunFunction } from '../../interfaces/Event';
 import { Data } from '../../interfaces/DB';
 
-export const run: RunFunction = async (client, oldMember: GuildMember, newMember: GuildMember) => {
-	if (newMember.user.bot) return;
+export const run: RunFunction = async (client, member: GuildMember) => {
+	if (member.user.bot) return;
 
 	const DataSchema = await client.db.load('data');
-	const Data = (await DataSchema.findOne({ Guild: newMember.guild.id, User: newMember.id })) as Data;
+	const Data = (await DataSchema.findOne({ Guild: member.guild.id, User: member.id })) as Data;
+	if (!Data) return;
 
-	if (Data && oldMember.premiumSinceTimestamp && !newMember.premiumSinceTimestamp) {
-		await DataSchema.delete({ Guild: newMember.guild.id, User: newMember.id });
+	await DataSchema.delete({ Guild: member.guild.id, User: member.id });
 
-		const Channel = await getChannel(newMember.guild, Data.Channel);
-		if (Channel) return Channel.delete();
-	}
+	const Channel = await getChannel(member.guild, Data.Channel);
+	if (Channel) return Channel.delete();
 };
 
 async function getChannel(guild: Guild, channel: string): Promise<VoiceChannel | false> {
@@ -28,4 +27,4 @@ async function getChannel(guild: Guild, channel: string): Promise<VoiceChannel |
 	return Channel;
 }
 
-export const name: string = 'guildMemberUpdate';
+export const name: string = 'guildMemberRemove';
