@@ -15,4 +15,5 @@ export const Emojis = {
 	source: '<:source:992828945391169587>',
 	draw_border: '<:draw_border:992831736864055389>',
 	notes: '<:notes:992831736146837564>',
+	boost: '<a:boost:993150105622429726>',
 };

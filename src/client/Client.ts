@@ -97,6 +97,7 @@ class client extends Client {
 						Guild: String,
 						Moderators: Array,
 						LogChannelId: String,
+						MessageChannelId: String,
 						Category: String,
 					},
 				},

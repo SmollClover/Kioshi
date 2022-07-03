@@ -4,6 +4,7 @@ export const Defaults = {
 	Settings: {
 		Moderators: [],
 		LogChannelId: '',
+		MessageChannelId: '',
 		Category: '',
 	},
 	Data: {

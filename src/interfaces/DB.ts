@@ -2,6 +2,7 @@ export interface Settings {
 	Guild: string;
 	Moderators: Array<string>;
 	LogChannelId: string;
+	MessageChannelId: string;
 	Category: string;
 }
 
