@@ -9,12 +9,16 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 	const SettingsSchema = await client.db.load('settings');
 	const Settings = (await SettingsSchema.findOne({ Guild: interaction.guildId })) as Settings;
 
-	if (
-		!process.env.DEV &&
-		!(interaction.member as GuildMember).premiumSinceTimestamp &&
-		!Settings.Moderators.includes(interaction.user.id)
-	)
-		return;
+	let canUse = false;
+	if (process.env.DEV) canUse = true;
+	if ((interaction.member as GuildMember).premiumSinceTimestamp) canUse = true;
+	if (Settings.Moderators.includes(interaction.user.id)) canUse = true;
+	Settings.Moderators.map((mod) => {
+		if (interaction.user.id === mod) return (canUse = true);
+		if ((interaction.member as GuildMember).roles.cache.get(mod)) return (canUse = true);
+	});
+
+	if (!canUse) return;
 
 	await interaction.deferReply({ ephemeral: true });
 
