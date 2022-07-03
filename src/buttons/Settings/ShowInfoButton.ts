@@ -9,7 +9,11 @@ export const run: RunFunction = async (client, interaction: ButtonInteraction) =
 	const SettingsSchema = await client.db.load('settings');
 	const Settings = (await SettingsSchema.findOne({ Guild: interaction.guildId })) as Settings;
 
-	if (!(interaction.member as GuildMember).premiumSinceTimestamp && !Settings.Moderators.includes(interaction.user.id))
+	if (
+		!process.env.DEV &&
+		!(interaction.member as GuildMember).premiumSinceTimestamp &&
+		!Settings.Moderators.includes(interaction.user.id)
+	)
 		return;
 
 	await interaction.deferReply({ ephemeral: true });
