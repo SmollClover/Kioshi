@@ -1,7 +1,5 @@
 # Kioshi
 
-## The Bot is still in development and is not functional currently!
-
 ### A Simple Discord Bot that handles Perks for Server Boosters
 
 > This Bot was designed for personal use. There's no guarantee for it to be stable when used by someone else
@@ -47,27 +45,26 @@ $ npm start
 -   bot
 -   applications.commands
 
+### Privileged Gateway Intents
+
+-   Server Members Intent
+
 ### Permission
 
-Soon™
+-   Manage Channels
+-   Read Messages/View Channels
+-   Send Messages
+-   Send Messages in Threads
+-   Manage Messages
+-   Embed Links
+-   Attach Files
+-   Read Message History
+-   Mention Everyon
+-   Use External Emojis
+-   Use External Stickers
+-   Add Reactions
+-   Use Slash Commands
 
 ### Template Invite Link
 
-Soon™
-
----
-
-## ToDo List
-
--   [ ] MongoDB
-    -   [ ] Set the Schemas
-    -   [ ] Define data Structures
--   [ ] Events
--   [ ] Commands
--   [ ] Permissions
-    -   [ ] Commands only available as Administrator
--   [ ] Logs
--   [ ] Other
-    -   [ ] Include List of Permissions in README
-    -   [ ] Include Template Invite Link in README
-    -   [ ] Plan out everything in the ToDo List
+`https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_CLIENT_ID&permissions=414464863312&scope=bot%20applications.commands`
