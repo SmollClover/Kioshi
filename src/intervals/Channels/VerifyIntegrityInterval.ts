@@ -15,14 +15,19 @@ export const run: RunFunction = async (client) => {
 
 			await Promise.all(
 				Entries.map(async (Data) => {
-					if ((await ensureChannel(client, Setting, Data)) === true) return;
-
 					const Guild = await getGuild(client, Data.Guild);
-					if (!Guild) return;
+					if (!Guild) {
+						await SettingsSchema.delete({ Guild: Data.Guild });
+						while (await DataSchema.delete({ Guild: Data.Guild })) {}
+						return;
+					}
+
+					const Member = await getMember(client, Data.Guild, Data.User);
+					if (!Member) return DataSchema.delete({ Guild: Data.Guild, User: Data.User });
+
+					if ((await ensureChannel(client, Setting, Data)) === true) return;
 					const Channel = await getChannel(client, Data.Guild, Data.Channel);
 					if (!Channel) return;
-					const Member = await getMember(client, Data.Guild, Data.User);
-					if (!Member) return;
 
 					if (Channel.userLimit !== Data.Limit) await Channel.setUserLimit(Data.Limit);
 					if (Channel.name !== Data.Name) {
