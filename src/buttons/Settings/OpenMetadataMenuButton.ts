@@ -1,4 +1,4 @@
-import { ButtonInteraction, MessageActionRow, MessageButton, CategoryChannel } from 'discord.js';
+import { ButtonInteraction, MessageActionRow, MessageButton, GuildMember } from 'discord.js';
 
 import { Defaults } from '../../common/Defaults';
 import { Data, Settings } from '../../interfaces/DB';
@@ -7,6 +7,12 @@ import { RunFunction } from '../../interfaces/Button';
 import { ensureChannel } from '../../common/Functions';
 
 export const run: RunFunction = async (client, interaction: ButtonInteraction) => {
+	const SettingsSchema = await client.db.load('settings');
+	const Settings = (await SettingsSchema.findOne({ Guild: interaction.guildId })) as Settings;
+
+	if (!(interaction.member as GuildMember).premiumSinceTimestamp && !Settings.Moderators.includes(interaction.user.id))
+		return;
+
 	await interaction.deferReply({ ephemeral: true });
 
 	const DataSchema = await client.db.load('data');
