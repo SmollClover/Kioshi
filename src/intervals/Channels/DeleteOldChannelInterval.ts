@@ -29,7 +29,9 @@ export const run: RunFunction = async (client) => {
 
 					if (Data.Used < Date.now() - 1000 * 60 * 60 * 24 * 2) {
 						await DataSchema.delete({ Guild: Data.Guild, User: Data.User });
-						return Channel.delete();
+						try {
+							return Channel.delete();
+						} catch {}
 					}
 				})
 			);
