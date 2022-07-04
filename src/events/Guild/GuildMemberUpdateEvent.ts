@@ -7,7 +7,7 @@ import { Emojis } from '../../common/Emojis';
 export const run: RunFunction = async (client, oldMember: GuildMember, newMember: GuildMember) => {
 	if (newMember.user.bot) return;
 
-	const SettingsSchema = await client.db.load('data');
+	const SettingsSchema = await client.db.load('settings');
 	const Settings = (await SettingsSchema.findOne({ Guild: newMember.guild.id })) as Settings;
 	const DataSchema = await client.db.load('data');
 	const Data = (await DataSchema.findOne({ Guild: newMember.guild.id, User: newMember.id })) as Data;
