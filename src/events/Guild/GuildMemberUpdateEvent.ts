@@ -12,7 +12,7 @@ export const run: RunFunction = async (client, oldMember: GuildMember, newMember
 	const DataSchema = await client.db.load('data');
 	const Data = (await DataSchema.findOne({ Guild: newMember.guild.id, User: newMember.id })) as Data;
 
-	if (!Data && !oldMember.premiumSinceTimestamp && newMember.premiumSinceTimestamp) {
+	if (newMember.premiumSinceTimestamp && oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) {
 		if (!Settings.MessageChannelId) return;
 
 		try {
