@@ -10,10 +10,7 @@ export const run: RunFunction = async (client, oldState: VoiceState, newState: V
 	const Data = (await DataSchema.findOne({ Guild: newState.guild.id, User: newState.member.id })) as Data;
 	if (!Data) return;
 
-	if (newState.channelId === Data.Channel)
-		return DataSchema.update({ Guild: newState.guild.id, User: newState.member.id }, { Used: Date.now() });
-
-	if (oldState.channelId === Data.Channel && newState.channelId !== Data.Channel)
+	if (newState.channelId === Data.Channel || oldState.channelId === Data.Channel)
 		return DataSchema.update({ Guild: newState.guild.id, User: newState.member.id }, { Used: Date.now() });
 };
 
