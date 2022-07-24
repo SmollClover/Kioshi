@@ -1,7 +1,7 @@
 import { Guild, GuildMember, VoiceChannel } from 'discord.js';
 
 import { RunFunction } from '../../interfaces/Event';
-import { Data, Settings } from '../../interfaces/DB';
+import { Settings } from '../../interfaces/DB';
 import { Emojis } from '../../common/Emojis';
 
 export const run: RunFunction = async (client, oldMember: GuildMember, newMember: GuildMember) => {
@@ -9,8 +9,6 @@ export const run: RunFunction = async (client, oldMember: GuildMember, newMember
 
 	const SettingsSchema = await client.db.load('settings');
 	const Settings = (await SettingsSchema.findOne({ Guild: newMember.guild.id })) as Settings;
-	const DataSchema = await client.db.load('data');
-	const Data = (await DataSchema.findOne({ Guild: newMember.guild.id, User: newMember.id })) as Data;
 
 	if (newMember.premiumSinceTimestamp && oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) {
 		if (!Settings.MessageChannelId) return;
@@ -23,11 +21,6 @@ export const run: RunFunction = async (client, oldMember: GuildMember, newMember
 				content: `${Emojis.boost} <@!${newMember.id}> **just boosted this Server. Thank you!** ${Emojis.boost}`,
 			});
 		} catch {}
-	} else if (Data && oldMember.premiumSinceTimestamp && !newMember.premiumSinceTimestamp) {
-		await DataSchema.delete({ Guild: newMember.guild.id, User: newMember.id });
-
-		const Channel = await getChannel(newMember.guild, Data.Channel);
-		if (Channel) return Channel.delete();
 	}
 };
 
