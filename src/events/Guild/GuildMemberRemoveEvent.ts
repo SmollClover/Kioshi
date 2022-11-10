@@ -13,7 +13,7 @@ export const run: RunFunction = async (client, member: GuildMember) => {
 	await DataSchema.delete({ Guild: member.guild.id, User: member.id });
 
 	const Channel = await getChannel(member.guild, Data.Channel);
-	if (Channel) return Channel.delete();
+	if (Channel) return Channel.delete('Member left Server');
 };
 
 async function getChannel(guild: Guild, channel: string): Promise<VoiceChannel | false> {

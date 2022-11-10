@@ -30,7 +30,11 @@ export const run: RunFunction = async (client) => {
 					if (Data.Used < Date.now() - 1000 * 60 * 60 * 24 * 2) {
 						await DataSchema.delete({ Guild: Data.Guild, User: Data.User });
 						try {
-							return Channel.delete();
+							return Channel.delete(
+								`Unused time exceeded | ${Data.Used} < ${Date.now() - 1000 * 60 * 60 * 24 * 2} = ${
+									Data.Used < Date.now() - 1000 * 60 * 60 * 24 * 2
+								}`
+							);
 						} catch {}
 					}
 				})
