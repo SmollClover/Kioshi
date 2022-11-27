@@ -2,7 +2,7 @@
 
 ### A Simple Discord Bot that handles Perks for Server Boosters
 
-> This Bot was designed for personal use. There's no guarantee for it to be stable when used by someone else
+> This Bot was designed for personal use. There's no guarantee for it to be stable when used by someone else and I will not provide any Support for running/using this Project
 
 ---
 
