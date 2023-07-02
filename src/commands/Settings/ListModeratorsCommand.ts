@@ -40,5 +40,5 @@ export const run: RunFunction = async (client, interaction: CommandInteraction) 
 };
 
 export const name: string = 'mods';
-export const description: string = 'Remove a Member or Role from Moderator';
+export const description: string = 'List all Moderators';
 export const options: Array<ApplicationCommandOptionData> = [];
